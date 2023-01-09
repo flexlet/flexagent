@@ -10,7 +10,7 @@ import (
 	"strings"
 	"sync"
 
-	"gitee.com/yaohuiwang/utils"
+	"github.com/flexlet/utils"
 	"github.com/google/uuid"
 	"github.com/robfig/cron"
 )

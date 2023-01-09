@@ -8,7 +8,7 @@ import (
 	"strings"
 	"sync"
 
-	"gitee.com/yaohuiwang/utils"
+	"github.com/flexlet/utils"
 )
 
 var AgentService *agentServiceImpl

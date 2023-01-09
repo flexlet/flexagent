@@ -219,7 +219,7 @@ curl -H 'Accept:application/json' -H 'Content-Type:application/json;charset=utf8
      -d '[{
         "plugin": "linux",
         "operation": "scp",
-        "args": ["-h","8.46.188.21","-u","root","-f","/root/k9s_Linux_x86_64.tar.gz","-t","/root/","-m","PUT"],
+        "args": ["-h","192.168.1.21","-u","root","-f","/root/k9s_Linux_x86_64.tar.gz","-t","/root/","-m","PUT"],
         "env": ["SCP_CIPHER_PASS=AAAAAgAAAAAAAAABAAAAAAAAAAlX6tkg+bmJ1yE7l1iYJz+FiZN8XWeIPVqbm08dAAAAAAEAAAEAAAAAAAAAGiAYvj77qxKCKsBaxBXaCuIwgqFp7sluRvaj"]
       }]'
 
@@ -229,7 +229,7 @@ curl -H 'Accept:application/json' -H 'Content-Type:application/json;charset=utf8
     "spec": {
       "args": [
         "-h",
-        "8.46.188.21",
+        "192.168.1.21",
         "-u",
         "root",
         "-f",
@@ -262,7 +262,7 @@ curl "${SERVER}/api/v1/jobs/${JOBURN}"
   "spec": {
     "args": [
       "-h",
-      "8.46.188.21",
+      "192.168.1.21",
       "-u",
       "root",
       "-f",
@@ -283,10 +283,10 @@ curl "${SERVER}/api/v1/jobs/${JOBURN}"
     "output": {
       "lastLine": 6,
       "lines": [
-        "spawn /usr/bin/scp -o StrictHostKeyChecking=no -P 22 /root/k9s_Linux_x86_64.tar.gz root@8.46.188.21:/root/\r",
+        "spawn /usr/bin/scp -o StrictHostKeyChecking=no -P 22 /root/k9s_Linux_x86_64.tar.gz root@192.168.1.21:/root/\r",
         "\r",
         "Authorized users only. All activities may be monitored and reported.\r",
-        "\rroot@8.46.188.21's password: \r",
+        "\rroot@192.168.1.21's password: \r",
         "\rk9s_Linux_x86_64.tar.gz                       100%   15MB 104.3MB/s   00:00    \r",
         ""
       ],

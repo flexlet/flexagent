@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"gitee.com/yaohuiwang/utils"
+	"github.com/flexlet/utils"
 )
 
 type CryptoEngine_AES struct {

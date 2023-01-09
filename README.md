@@ -22,7 +22,7 @@ Install:
 
 ```sh
 # copy to node
-scp release/target/flexagent-amd64-v0.1.0.tar.gz root@8.46.188.193:/root/
+scp release/target/flexagent-amd64-v0.1.0.tar.gz root@192.168.1.193:/root/
 
 # install on node
 tar -zxf flexagent-amd64-v0.1.0.tar.gz

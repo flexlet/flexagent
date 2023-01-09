@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"gitee.com/yaohuiwang/utils"
+	"github.com/flexlet/utils"
 )
 
 const (

@@ -10,7 +10,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"gitee.com/yaohuiwang/utils"
+	"github.com/flexlet/utils"
 )
 
 func main() {

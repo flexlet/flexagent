@@ -4,7 +4,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"gitee.com/yaohuiwang/utils"
+	"github.com/flexlet/utils"
 	"gopkg.in/yaml.v3"
 )
 

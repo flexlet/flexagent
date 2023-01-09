@@ -15,7 +15,7 @@ import (
 	"syscall"
 	"time"
 
-	"gitee.com/yaohuiwang/utils"
+	"github.com/flexlet/utils"
 	"github.com/google/uuid"
 )
 
