@@ -1,0 +1,14 @@
+log_level: 0
+keystores:
+  primary: "/opt/flexagent/keystore/primary.ks"
+  standby: "/opt/flexagent/keystore/standby.ks"
+algorithum: "AES_256"
+vaults_path: "/opt/flexagent/vaults"
+cronjobs_path: "/opt/flexagent/cronjobs"
+plugins_path: "/opt/flexagent/plugins"
+plugins_log_path: "/var/log/flexagent/plugins"
+plugins: ["linux"]
+job_queue_size: 64
+job_thread_pool_size: 8
+max_cronjobs: 128
+cronjob_max_history_jobs: 30

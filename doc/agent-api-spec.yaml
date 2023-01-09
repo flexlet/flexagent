@@ -1,0 +1,1199 @@
+---
+swagger: "2.0"
+info:
+  title: agent
+  version: v1
+  description: |
+    Agent framwork to perform node operations
+  contact:
+    name: Wang Yaohui
+    email: yaohuiwang@outlook.com
+schemes:
+  - https
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+tags:
+  - name: Agent
+    description: Agent status
+  - name: Crypto
+    description: Crypto service
+  - name: Job
+    description: Plugin Jobs
+basePath: /api/v1
+paths:
+  /readyz:
+    get:
+      description: "Ready status"
+      tags:
+        - Agent
+      operationId: readyz
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: "Ready status"
+          schema:
+            $ref: "#/definitions/ReadyStatus"
+  /healthz:
+    get:
+      description: "Health status"
+      tags:
+        - Agent
+      operationId: healthz
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: "Health status"
+          schema:
+            $ref: "#/definitions/HealthStatus"
+  /crypto/encrypt:
+    post:
+      description: "Encrypt data"
+      tags:
+        - Crypto
+      operationId: encrypt
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: data
+          in: body
+          description: "Data to encrypt"
+          required: true
+          schema:
+            $ref: "#/definitions/CryptoData"
+      responses:
+        "200":
+          description: "Data encrypted"
+          schema:
+            $ref: "#/definitions/CryptoData"
+        "400":
+          $ref: "#/responses/trait:standardErrors:400"
+        "401":
+          $ref: "#/responses/trait:standardErrors:401"
+        "403":
+          $ref: "#/responses/trait:standardErrors:403"
+        "404":
+          $ref: "#/responses/trait:standardErrors:404"
+        "500":
+          $ref: "#/responses/trait:standardErrors:500"
+  /crypto/decrypt:
+    post:
+      description: "Decrypt data"
+      tags:
+        - Crypto
+      operationId: decrypt
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: data
+          in: body
+          description: "Data to decrypt"
+          required: true
+          schema:
+            $ref: "#/definitions/CryptoData"
+      responses:
+        "200":
+          description: "Data decrypted"
+          schema:
+            $ref: "#/definitions/CryptoData"
+        "400":
+          $ref: "#/responses/trait:standardErrors:400"
+        "401":
+          $ref: "#/responses/trait:standardErrors:401"
+        "403":
+          $ref: "#/responses/trait:standardErrors:403"
+        "404":
+          $ref: "#/responses/trait:standardErrors:404"
+        "500":
+          $ref: "#/responses/trait:standardErrors:500"
+  /crypto/secret/encrypt:
+    post:
+      description: "Encrypt k8s secret"
+      tags:
+        - Crypto
+      operationId: secretEncrypt
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: secret
+          in: body
+          description: "Secret to encrypt"
+          required: true
+          schema:
+            $ref: "#/definitions/KubeSecret"
+      responses:
+        "200":
+          description: "Secret encrypted"
+          schema:
+            $ref: "#/definitions/KubeSecret"
+        "400":
+          $ref: "#/responses/trait:standardErrors:400"
+        "401":
+          $ref: "#/responses/trait:standardErrors:401"
+        "403":
+          $ref: "#/responses/trait:standardErrors:403"
+        "404":
+          $ref: "#/responses/trait:standardErrors:404"
+        "500":
+          $ref: "#/responses/trait:standardErrors:500"
+  /crypto/secret/decrypt:
+    post:
+      description: "Decrypt k8s secret"
+      tags:
+        - Crypto
+      operationId: secretDecrypt
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: secret
+          in: body
+          description: "Secret to decrypt"
+          required: true
+          schema:
+            $ref: "#/definitions/KubeSecret"
+      responses:
+        "200":
+          description: "Secret decrypted"
+          schema:
+            $ref: "#/definitions/KubeSecret"
+        "400":
+          $ref: "#/responses/trait:standardErrors:400"
+        "401":
+          $ref: "#/responses/trait:standardErrors:401"
+        "403":
+          $ref: "#/responses/trait:standardErrors:403"
+        "404":
+          $ref: "#/responses/trait:standardErrors:404"
+        "500":
+          $ref: "#/responses/trait:standardErrors:500"
+  /crypto/vaults:
+    get:
+      description: "List vaults"
+      tags:
+        - Crypto
+      operationId: listVaults
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: "Name filter"
+          x-nullable: true
+          pattern: ^[A-Za-z0-9\-_.]{1,32}$
+          type: string
+      responses:
+        "200":
+          description: "Get vaults succeed"
+          schema:
+            type: array
+            items:
+              type: string
+        "400":
+          $ref: "#/responses/trait:standardErrors:400"
+        "401":
+          $ref: "#/responses/trait:standardErrors:401"
+        "403":
+          $ref: "#/responses/trait:standardErrors:403"
+        "404":
+          $ref: "#/responses/trait:standardErrors:404"
+        "500":
+          $ref: "#/responses/trait:standardErrors:500"
+  /crypto/vault/{name}:
+    post:
+      description: "Create vault"
+      tags:
+        - Crypto
+      operationId: createVault
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: name
+          in: path
+          description: "Vault name"
+          required: true
+          x-nullable: false
+          pattern: ^[A-Za-z0-9\-_.]{1,32}$
+          type: string
+        - name: data
+          in: body
+          description: "Vault data"
+          required: true
+          x-nullable: false
+          schema:
+            type: object
+            additionalProperties:
+              type: string
+      responses:
+        "200":
+          description: "Create vault succeeded"
+          schema:
+            type: string
+        "400":
+          $ref: "#/responses/trait:standardErrors:400"
+        "401":
+          $ref: "#/responses/trait:standardErrors:401"
+        "403":
+          $ref: "#/responses/trait:standardErrors:403"
+        "404":
+          $ref: "#/responses/trait:standardErrors:404"
+        "500":
+          $ref: "#/responses/trait:standardErrors:500"
+    put:
+      description: "Update vault"
+      tags:
+        - Crypto
+      operationId: updateVault
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: name
+          in: path
+          description: "Vault name"
+          required: true
+          x-nullable: false
+          pattern: ^[A-Za-z0-9\-_.]{1,32}$
+          type: string
+        - name: data
+          in: body
+          description: "Vault data"
+          required: true
+          x-nullable: false
+          schema:
+            type: object
+            additionalProperties:
+              type: string
+      responses:
+        "200":
+          description: "Update vault succeeded"
+          schema:
+            type: string
+        "400":
+          $ref: "#/responses/trait:standardErrors:400"
+        "401":
+          $ref: "#/responses/trait:standardErrors:401"
+        "403":
+          $ref: "#/responses/trait:standardErrors:403"
+        "404":
+          $ref: "#/responses/trait:standardErrors:404"
+        "500":
+          $ref: "#/responses/trait:standardErrors:500"
+    get:
+      description: "Query vault"
+      tags:
+        - Crypto
+      operationId: queryVault
+      produces:
+        - application/json
+      parameters:
+        - name: keys
+          in: query
+          description: "Key filter"
+          x-nullable: true
+          type: array
+          items:
+            type: string
+        - name: name
+          in: path
+          description: "Vault name"
+          required: true
+          x-nullable: false
+          pattern: ^[A-Za-z0-9\-_.]{1,32}$
+          type: string
+      responses:
+        "200":
+          description: "Get vault succeed"
+          schema:
+            type: object
+            additionalProperties:
+              type: string
+        "400":
+          $ref: "#/responses/trait:standardErrors:400"
+        "401":
+          $ref: "#/responses/trait:standardErrors:401"
+        "403":
+          $ref: "#/responses/trait:standardErrors:403"
+        "404":
+          $ref: "#/responses/trait:standardErrors:404"
+        "500":
+          $ref: "#/responses/trait:standardErrors:500"
+    delete:
+      description: "Delete vault"
+      tags:
+        - Crypto
+      operationId: deleteVault
+      produces:
+        - application/json
+      parameters:
+        - name: keys
+          in: query
+          description: "Key filter"
+          x-nullable: true
+          type: array
+          items:
+            type: string
+        - name: name
+          in: path
+          description: "Vault name"
+          required: true
+          x-nullable: false
+          pattern: ^[A-Za-z0-9\-_.]{1,32}$
+          type: string
+      responses:
+        "200":
+          description: "Delete vault succeed"
+          schema:
+            type: string
+        "400":
+          $ref: "#/responses/trait:standardErrors:400"
+        "401":
+          $ref: "#/responses/trait:standardErrors:401"
+        "403":
+          $ref: "#/responses/trait:standardErrors:403"
+        "404":
+          $ref: "#/responses/trait:standardErrors:404"
+        "500":
+          $ref: "#/responses/trait:standardErrors:500"
+  /jobs:
+    post:
+      description: "Submit jobs"
+      tags:
+        - Job
+      operationId: submit
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: wait
+          in: query
+          description: "Wait until job finished"
+          required: false
+          x-nullable: true
+          type: boolean
+          default: false
+        - name: spec
+          in: body
+          description: "Job spec"
+          required: true
+          x-nullable: false
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/JobSpec"
+      responses:
+        "200":
+          description: "Submit job succeeded"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Job"
+        "400":
+          $ref: "#/responses/trait:standardErrors:400"
+        "401":
+          $ref: "#/responses/trait:standardErrors:401"
+        "403":
+          $ref: "#/responses/trait:standardErrors:403"
+        "404":
+          $ref: "#/responses/trait:standardErrors:404"
+        "500":
+          $ref: "#/responses/trait:standardErrors:500"
+    get:
+      description: "List Jobs"
+      tags:
+        - Job
+      operationId: list
+      produces:
+        - application/json
+      parameters:
+        - name: plugin
+          in: query
+          description: "Plugin"
+          x-nullable: true
+          pattern: ^[A-Za-z0-9\-_.]{1,32}$
+          type: string
+        - name: operation
+          in: query
+          description: "Operation"
+          x-nullable: true
+          pattern: ^[A-Za-z0-9\-_.]{1,32}$
+          type: string
+        - name: startTimeBegin
+          in: query
+          description: "Start time range begin"
+          x-nullable: true
+          type: integer
+          format: int64
+        - name: startTimeEnd
+          in: query
+          description: "Start time range end"
+          x-nullable: true
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: "List jobs succeeded"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Job"
+        "400":
+          $ref: "#/responses/trait:standardErrors:400"
+        "401":
+          $ref: "#/responses/trait:standardErrors:401"
+        "403":
+          $ref: "#/responses/trait:standardErrors:403"
+        "404":
+          $ref: "#/responses/trait:standardErrors:404"
+        "500":
+          $ref: "#/responses/trait:standardErrors:500"
+  /jobs/{urn}:
+    get:
+      description: "Query job"
+      tags:
+        - Job
+      operationId: query
+      produces:
+        - application/json
+      parameters:
+        - name: urn
+          in: path
+          description: "Job urn"
+          required: true
+          x-nullable: false
+          pattern: ^[A-Za-z0-9\-._]{1,32}:jobs:[A-Za-z0-9\-._]{1,32}:[A-Za-z0-9\-]{36}$
+          type: string
+        - name: outputLineStart
+          in: query
+          description: "Output line start"
+          required: false
+          x-nullable: true
+          type: integer
+          format: int32
+          minimum: 1
+        - name: outputLineLimit
+          in: query
+          description: "Output lines limit"
+          required: false
+          x-nullable: true
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 100
+          default: 10
+      responses:
+        "200":
+          description: "Query job succeeded"
+          schema:
+            $ref: "#/definitions/Job"
+        "400":
+          $ref: "#/responses/trait:standardErrors:400"
+        "401":
+          $ref: "#/responses/trait:standardErrors:401"
+        "403":
+          $ref: "#/responses/trait:standardErrors:403"
+        "404":
+          $ref: "#/responses/trait:standardErrors:404"
+        "500":
+          $ref: "#/responses/trait:standardErrors:500"
+    delete:
+      description: "Delete job"
+      tags:
+        - Job
+      operationId: delete
+      produces:
+        - application/json
+      parameters:
+        - name: urn
+          in: path
+          description: "Job urn"
+          required: true
+          x-nullable: false
+          pattern: ^[A-Za-z0-9\-._]{1,32}:jobs:[A-Za-z0-9\-._]{1,32}:[A-Za-z0-9\-]{36}$
+          type: string
+      responses:
+        "200":
+          description: "Delete job succeeded"
+          schema:
+            type: string
+        "400":
+          $ref: "#/responses/trait:standardErrors:400"
+        "401":
+          $ref: "#/responses/trait:standardErrors:401"
+        "403":
+          $ref: "#/responses/trait:standardErrors:403"
+        "404":
+          $ref: "#/responses/trait:standardErrors:404"
+        "500":
+          $ref: "#/responses/trait:standardErrors:500"
+  /jobs/{urn}/input:
+    post:
+      description: "Expect and input"
+      tags:
+        - Job
+      operationId: input
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: urn
+          in: path
+          description: "Job urn"
+          required: true
+          x-nullable: false
+          pattern: ^[A-Za-z0-9\-._]{1,32}:jobs:[A-Za-z0-9\-._]{1,32}:[A-Za-z0-9\-]{36}$
+          type: string
+        - name: input
+          in: body
+          description: "Input data"
+          required: true
+          x-nullable: false
+          schema:
+            $ref: "#/definitions/JobInput"
+      responses:
+        "200":
+          description: "Input job succeeded"
+          schema:
+            $ref: "#/definitions/Job"
+        "400":
+          $ref: "#/responses/trait:standardErrors:400"
+        "401":
+          $ref: "#/responses/trait:standardErrors:401"
+        "403":
+          $ref: "#/responses/trait:standardErrors:403"
+        "404":
+          $ref: "#/responses/trait:standardErrors:404"
+        "500":
+          $ref: "#/responses/trait:standardErrors:500"
+  /jobs/{urn}/kill:
+    post:
+      description: "Kill job"
+      tags:
+        - Job
+      operationId: kill
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: urn
+          in: path
+          description: "Job urn"
+          required: true
+          x-nullable: false
+          pattern: ^[A-Za-z0-9\-._]{1,32}:jobs:[A-Za-z0-9\-._]{1,32}:[A-Za-z0-9\-]{36}$
+          type: string
+        - name: force
+          in: query
+          description: "Force kill"
+          required: false
+          x-nullable: true
+          type: boolean
+          default: false
+      responses:
+        "200":
+          description: "Kill job succeeded"
+          schema:
+            $ref: "#/definitions/Job"
+        "400":
+          $ref: "#/responses/trait:standardErrors:400"
+        "401":
+          $ref: "#/responses/trait:standardErrors:401"
+        "403":
+          $ref: "#/responses/trait:standardErrors:403"
+        "404":
+          $ref: "#/responses/trait:standardErrors:404"
+        "500":
+          $ref: "#/responses/trait:standardErrors:500"
+  /cronjobs:
+    post:
+      description: "Submit cronjobs"
+      tags:
+        - Cronjob
+      operationId: submitCronJobs
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: spec
+          in: body
+          description: "Cronjobs spec"
+          required: true
+          x-nullable: false
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/CronJobSpec"
+      responses:
+        "200":
+          description: "Submit cronjob succeeded"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/CronJob"
+        "400":
+          $ref: "#/responses/trait:standardErrors:400"
+        "401":
+          $ref: "#/responses/trait:standardErrors:401"
+        "403":
+          $ref: "#/responses/trait:standardErrors:403"
+        "404":
+          $ref: "#/responses/trait:standardErrors:404"
+        "500":
+          $ref: "#/responses/trait:standardErrors:500"
+    get:
+      description: "List cronjobs"
+      tags:
+        - Cronjob
+      operationId: listCronJobs
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: "Name filter"
+          x-nullable: true
+          pattern: ^[A-Za-z0-9\-_.]{1,32}$
+          type: string
+      responses:
+        "200":
+          description: "List cronjobs succeeded"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/CronJob"
+        "400":
+          $ref: "#/responses/trait:standardErrors:400"
+        "401":
+          $ref: "#/responses/trait:standardErrors:401"
+        "403":
+          $ref: "#/responses/trait:standardErrors:403"
+        "404":
+          $ref: "#/responses/trait:standardErrors:404"
+        "500":
+          $ref: "#/responses/trait:standardErrors:500"
+  /cronjobs/{id}:
+    get:
+      description: "Query cronjob"
+      tags:
+        - Cronjob
+      operationId: queryCronJob
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: "Cronjob id"
+          required: true
+          x-nullable: false
+          pattern: ^[A-Za-z0-9\-]{36}$
+          type: string
+      responses:
+        "200":
+          description: "Query cronjob succeeded"
+          schema:
+            $ref: "#/definitions/CronJob"
+        "400":
+          $ref: "#/responses/trait:standardErrors:400"
+        "401":
+          $ref: "#/responses/trait:standardErrors:401"
+        "403":
+          $ref: "#/responses/trait:standardErrors:403"
+        "404":
+          $ref: "#/responses/trait:standardErrors:404"
+        "500":
+          $ref: "#/responses/trait:standardErrors:500"
+    put:
+      description: "Update cronjob"
+      tags:
+        - Cronjob
+      operationId: updateCronJob
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: "Cronjob id"
+          required: true
+          x-nullable: false
+          pattern: ^[A-Za-z0-9\-]{36}$
+          type: string
+        - name: spec
+          in: body
+          description: "Cronjob spec"
+          required: true
+          x-nullable: false
+          schema:
+            $ref: "#/definitions/CronJobSpec"
+      responses:
+        "200":
+          description: "Update cronjob succeeded"
+          schema:
+            $ref: "#/definitions/CronJob"
+        "400":
+          $ref: "#/responses/trait:standardErrors:400"
+        "401":
+          $ref: "#/responses/trait:standardErrors:401"
+        "403":
+          $ref: "#/responses/trait:standardErrors:403"
+        "404":
+          $ref: "#/responses/trait:standardErrors:404"
+        "500":
+          $ref: "#/responses/trait:standardErrors:500"
+    delete:
+      description: "Delete cronjob"
+      tags:
+        - Cronjob
+      operationId: deleteCronJob
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: "Cronjob id"
+          required: true
+          x-nullable: false
+          pattern: ^[A-Za-z0-9\-]{36}$
+          type: string
+      responses:
+        "200":
+          description: "Delete cronjob succeeded"
+          schema:
+            type: string
+        "400":
+          $ref: "#/responses/trait:standardErrors:400"
+        "401":
+          $ref: "#/responses/trait:standardErrors:401"
+        "403":
+          $ref: "#/responses/trait:standardErrors:403"
+        "404":
+          $ref: "#/responses/trait:standardErrors:404"
+        "500":
+          $ref: "#/responses/trait:standardErrors:500"
+  /cronjobs/{id}/stop:
+    post:
+      description: "Stop cronjob"
+      tags:
+        - Cronjob
+      operationId: stopCronJob
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: "Cronjob id"
+          required: true
+          x-nullable: false
+          pattern: ^[A-Za-z0-9\-]{36}$
+          type: string
+      responses:
+        "200":
+          description: "Stop cronjob succeeded"
+          schema:
+            $ref: "#/definitions/CronJob"
+        "400":
+          $ref: "#/responses/trait:standardErrors:400"
+        "401":
+          $ref: "#/responses/trait:standardErrors:401"
+        "403":
+          $ref: "#/responses/trait:standardErrors:403"
+        "404":
+          $ref: "#/responses/trait:standardErrors:404"
+        "500":
+          $ref: "#/responses/trait:standardErrors:500"
+  /cronjobs/{id}/start:
+    post:
+      description: "Start cronjob"
+      tags:
+        - Cronjob
+      operationId: startCronJob
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: "Cronjob id"
+          required: true
+          x-nullable: false
+          pattern: ^[A-Za-z0-9\-]{36}$
+          type: string
+      responses:
+        "200":
+          description: "Start cronjob succeeded"
+          schema:
+            $ref: "#/definitions/CronJob"
+        "400":
+          $ref: "#/responses/trait:standardErrors:400"
+        "401":
+          $ref: "#/responses/trait:standardErrors:401"
+        "403":
+          $ref: "#/responses/trait:standardErrors:403"
+        "404":
+          $ref: "#/responses/trait:standardErrors:404"
+        "500":
+          $ref: "#/responses/trait:standardErrors:500"
+responses:
+  "trait:standardErrors:400":
+    description: ""
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+  "trait:standardErrors:401":
+    description: ""
+    schema:
+      type: object
+  "trait:standardErrors:403":
+    description: ""
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+  "trait:standardErrors:404":
+    description: ""
+    schema:
+      type: object
+      properties:
+        status:
+          type: string
+        error:
+          type: string
+      required:
+        - status
+        - error
+  "trait:standardErrors:500":
+    description: ""
+    schema:
+      type: object
+definitions:
+  ReadyStatus:
+    description: "Ready status"
+    required:
+      - status
+    properties:
+      status:
+        type: string
+        x-nullable: false
+        enum:
+          - ready
+          - not_ready
+  HealthProbe:
+    description: "Node healthy probes"
+    required:
+      - name
+      - status
+    properties:
+      name:
+        type: string
+        x-nullable: false
+        description: "Probe item name"
+      status:
+        type: string
+        x-nullable: false
+        description: "Probe item status"
+        enum:
+          - unknown
+          - healthy
+          - warning
+          - critical
+      message:
+        type: string
+        x-nullable: true
+        description: "Probe item message"
+  HealthStatus:
+    description: "Node healthy status"
+    required:
+      - status
+      - probes
+    properties:
+      status:
+        type: string
+        x-nullable: false
+        description: "Node healthy status"
+        enum:
+          - unknown
+          - healthy
+          - warning
+          - critical
+      probes:
+        type: object
+        x-nullable: false
+        description: "Plugin health probes"
+        additionalProperties:
+          type: object
+          additionalProperties:
+            $ref: "#/definitions/HealthProbe"
+  CryptoData:
+    description: "Data to encrypt or decrypt"
+    required:
+      - format
+      - data
+    properties:
+      format:
+        type: string
+        x-nullable: false
+        description: "Data format"
+        enum:
+          - base64
+          - raw
+      data:
+        type: object
+        x-nullable: false
+        description: "Data dictionary"
+        additionalProperties:
+          type: string
+  KubeMetadata:
+    description: "K8S metadata"
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        x-nullable: false
+        description: "Name"
+      namespace:
+        type: string
+        x-nullable: true
+        description: "Name"
+      labels:
+        type: object
+        x-nullable: true
+        description: "Labels"
+        additionalProperties:
+          type: string
+      annotations:
+        type: object
+        x-nullable: true
+        description: "Annotations"
+        additionalProperties:
+          type: string
+  KubeSecret:
+    description: "K8S secret"
+    required:
+      - apiVersion
+      - kind
+      - type
+      - metadata
+      - data
+    properties:
+      apiVersion:
+        type: string
+        x-nullable: false
+        description: "API version"
+        format: "^v1$"
+      kind:
+        type: string
+        x-nullable: false
+        description: "Kind"
+        format: "^Secret$"
+      type:
+        type: string
+        x-nullable: false
+        description: "Kind"
+      metadata:
+        "$ref": "#/definitions/KubeMetadata"
+        x-nullable: false
+        description: "Metadata"
+      data:
+        type: object
+        x-nullable: false
+        description: "Data dictionary"
+        additionalProperties:
+          type: string
+  JobSpec:
+    description: "Job spec"
+    required:
+      - plugin
+      - operation
+    properties:
+      plugin:
+        type: string
+        x-nullable: false
+        pattern: ^[A-Za-z0-9\-_.]{1,32}$
+        description: "Plugin"
+      operation:
+        type: string
+        x-nullable: false
+        pattern: ^[A-Za-z0-9\-_.]{1,32}$
+        description: "Operation"
+      args:
+        type: array
+        x-nullable: false
+        description: "Arguments"
+        items:
+          type: string
+      env:
+        type: array
+        x-nullable: false
+        description: "Enviorment variables, key=value array"
+        items:
+          type: string
+  JobInput:
+    description: "Job input"
+    required:
+      - data
+    properties:
+      expect:
+        type: string
+        x-nullable: true
+        description: "Expect string"
+      timeout:
+        type: integer
+        format: int32
+        x-nullable: true
+        description: "Expect timeout in seconds"
+      data:
+        type: string
+        x-nullable: false
+        description: "Input data"
+  JobOutput:
+    description: "Job output"
+    required:
+      - lastLine
+      - moreLine
+      - lines
+    properties:
+      lastLine:
+        type: integer
+        format: int32
+        x-nullable: false
+        description: "Last output line"
+      moreLine:
+        type: boolean
+        x-nullable: false
+        description: "There is more line"
+      lines:
+        type: array
+        x-nullable: false
+        description: "Output"
+        items:
+          type: string
+  JobStatus:
+    description: "Job status"
+    required:
+      - state
+    properties:
+      output:
+        "$ref": "#/definitions/JobOutput"
+        description: "Job output"
+        x-nullable: true
+      state:
+        type: string
+        x-nullable: false
+        description: "Job state"
+        enum:
+          - waiting
+          - running
+          - exited
+          - killed
+          - failed_start
+      exitCode:
+        description: "Exit code"
+        x-nullable: true
+        type: integer
+        format: int32
+  Job:
+    description: "Job"
+    required:
+      - id
+      - spec
+      - status
+    properties:
+      id:
+        description: "Job id"
+        x-nullable: false
+        pattern: ^[A-Za-z0-9\-]{36}$
+        type: string
+      urn:
+        description: "Job urn"
+        x-nullable: false
+        pattern: ^[A-Za-z0-9\-._]{1,32}:jobs:[A-Za-z0-9\-._]{1,32}:[A-Za-z0-9\-]{36}$
+        type: string
+      spec:
+        "$ref": "#/definitions/JobSpec"
+        description: "Job spec"
+        x-nullable: false
+      status:
+        "$ref": "#/definitions/JobStatus"
+        description: "Job status"
+        x-nullable: false
+  CronJobSpec:
+    description: "Cronjob spec"
+    required:
+      - name
+      - jobspec
+      - schedule
+    properties:
+      name:
+        description: "Job name"
+        x-nullable: false
+        pattern: ^[A-Za-z0-9\-._]{1,32}$
+        type: string
+      schedule:
+        description: "Cronjob schedule"
+        x-nullable: false
+        type: string
+      jobspec:
+        "$ref": "#/definitions/JobSpec"
+        description: "Job spec"
+        x-nullable: false
+  CronJob:
+    description: "Cronjob"
+    required:
+      - spec
+      - jobs
+    properties:
+      id:
+        description: "Cronjob id"
+        x-nullable: false
+        pattern: ^[A-Za-z0-9\-]{36}$
+        type: string
+      status:
+        type: string
+        x-nullable: false
+        enum:
+          - running
+          - stoped
+      spec:
+        "$ref": "#/definitions/CronJobSpec"
+        description: "Cronjob spec"
+        x-nullable: false
+      jobs:
+        description: "History jobs"
+        x-nullable: false
+        type: array
+        items:
+          type: string

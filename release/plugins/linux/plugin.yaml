@@ -1,0 +1,15 @@
+name: linux
+probes:
+  cpu_usage: probes/cpu_usage.sh
+  mem_usage: probes/mem_usage.sh
+  fs_usage: probes/fs_usage.sh
+operations:
+  ifcfg: "operations/ifcfg.sh"
+  ping: "operations/ping.sh"
+  scp: "operations/scp.sh"
+  write: "operations/write.sh"
+  cert_check: "operations/cert_check.sh"
+  cert_gen: "operations/cert_gen.sh"
+  vgupdate: "operations/vgupdate.sh"
+  lvupdate: "operations/lvupdate.sh"
+  mount: "operations/mount.sh"

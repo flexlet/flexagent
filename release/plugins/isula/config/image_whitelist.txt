@@ -1,0 +1,9 @@
+calico/kube-controllers
+registry.simbaos.com/coredns
+prom/kubernetes-event-exporter
+prom/prometheus-operator
+prom/kube-state-metrics
+prom/node_exporter
+registry.simbaos.com/dhac-controller
+prom/eventreceiver
+alertserver

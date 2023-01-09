@@ -1,0 +1,9 @@
+name: sshd
+probes:
+  service_status: "probes/service_status.sh"
+operations:
+  service_init: "operations/service_init.sh"
+  service_start: "operations/service_start.sh"
+  service_stop: "operations/service_stop.sh"
+  service_restart: "operations/service_restart.sh"
+  service_logs: "operations/service_logs.sh"

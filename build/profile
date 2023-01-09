@@ -1,0 +1,11 @@
+# plugin list (space separated)
+PLUGINS="linux sshd"
+
+# software version
+VERSION="v0.1.0"
+
+# cpu arch
+ARCH="amd64"
+
+# cert issuer
+ISSUER="/C=CN/ST=Sichuan/L=Chengdu/O=Example/OU=Dept/CN=flexagent.dept.example.com"

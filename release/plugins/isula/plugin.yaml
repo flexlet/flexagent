@@ -1,0 +1,10 @@
+name: isula
+probes:
+  service_status: "probes/service_status.sh"
+operations:
+  registry_cfg: "operations/registry_cfg.sh"
+  registry_del: "operations/registry_del.sh"
+  image_pull: "operations/image_pull.sh"
+  image_remove: "operations/image_remove.sh"
+  image_clean: "operations/image_clean.sh"
+  image_sync: "operations/image_sync.sh"

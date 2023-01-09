@@ -1,0 +1,5 @@
+name: flexlb
+probes:
+  service_status: "probes/service_status.sh"
+operations:
+  service_cfg: "operations/service_cfg.sh"
